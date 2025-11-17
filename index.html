@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tienda de Hot Wheels - Ryan Garage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #ff6b00;
+      --primary-dark: #e05600;
+      --bg: #020617;
+      --card-bg: #0b1220;
+      --text: #f9fafb;
+      --accent: #22c55e;
+      --gray: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827, #020617);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 0.8rem;
+      background: linear-gradient(135deg, #ef4444, #f97316, #facc15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #111827;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    }
+
+    .logo-text h1 {
+      font-size: 1.3rem;
+    }
+
+    .logo-text span {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .cart {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      backdrop-filter: blur(8px);
+    }
+
+    .cart-icon {
+      font-size: 1.1rem;
+    }
+
+    .cart-info {
+      font-size: 0.85rem;
+      line-height: 1.1;
+    }
+
+    .badge {
+      background: var(--primary);
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    /* HERO */
+    .hero {
+      background: radial-gradient(circle at top left, #1e293b, #020617);
+      border-radius: 1.5rem;
+      padding: 1.5rem 1.4rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 1.5rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .hero h2 {
+      font-size: 1.7rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero p {
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.7rem;
+      color: var(--accent);
+    }
+
+    .hero-highlight span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.7rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #111827;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(248, 113, 113, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+    }
+
+    .btn-outline:hover {
+      background: rgba(30, 64, 175, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .hero-tag {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 0.6rem;
+    }
+
+    .hero-right {
+      border-radius: 1rem;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      background: radial-gradient(circle at top, #020617, #020617);
+    }
+
+    .hero-right-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+    }
+
+    .chip {
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    /* SECCIONES TEXTO */
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .section-header h3 {
+      font-size: 1.1rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .section-body {
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 1rem 1.1rem;
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+
+    .section-body ul {
+      margin-left: 1.1rem;
+      margin-top: 0.4rem;
+    }
+
+    .section-body li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* FILTROS Y PRODUCTOS */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      align-items: center;
+    }
+
+    .filters label {
+      color: var(--gray);
+    }
+
+    .search-input,
+    .select-input {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.35rem 0.8rem;
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: #6b7280;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 0.7rem;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 0.6rem;
+      left: 0.6rem;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      padding: 0.12rem 0.5rem;
+      font-size: 0.65rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 130px;
+      border-radius: 0.9rem;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-bottom: 0.4rem;
+      border: 1px dashed rgba(75, 85, 99, 0.9);
+      text-align: center;
+      padding: 0.4rem;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .card-detail {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.3rem;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .btn-add {
+      font-size: 0.8rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--primary);
+      color: #111827;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-weight: 600;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-add:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .stock {
+      font-size: 0.7rem;
+      color: var(--gray);
+      margin-top: 0.1rem;
+    }
+
+    .summary {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 1.2rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .summary-main {
+      font-size: 0.9rem;
+    }
+
+    .summary-total {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background: rgba(22, 163, 74, 0.95);
+      color: #ecfdf3;
+      padding: 0.6rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      box-shadow: 0 12px 30px rgba(21, 128, 61, 0.7);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 40;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <div class="logo-icon">HW</div>
+        <div class="logo-text">
+          <h1>Ryan Hot Wheels Garage</h1>
+          <span>Modelos coleccionables • Lima, Perú</span>
+        </div>
+      </div>
+      <div class="cart" id="cartWidget">
+        <div class="cart-icon">🛒</div>
+        <div class="cart-info">
+          <div><span id="cartCount">0</span> artículo(s)</div>
+          <div class="badge">Total S/ <span id="cartTotal">0.00</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-highlight">
+          <span></span>
+          Hot Wheels seleccionados para coleccionistas
+        </div>
+        <h2>Catálogo de Hot Wheels en venta </h2>
+        <p>
+          Elige tus modelos favoritos y envíame un mensaje por WhatsApp con el resumen del carrito.
+          Trabajo con piezas nuevas en blister.
+        </p>
+        <div class="hero-actions">
+          <!-- CAMBIA 51999999999 POR TU NÚMERO REAL -->
+          <a
+            href="https://wa.me/981092248?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20de%20Hot%20Wheels."
+            target="_blank"
+            class="btn btn-primary"
+          >
+            💬 Escribirme por WhatsApp
+          </a>
+          <button class="btn btn-outline" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">
+            📦 Ver catálogo
+          </button>
+        </div>
+        <p class="hero-tag">Tip: toma pantallazo del carrito o copia el mensaje que se genera automáticamente.</p>
+      </div>
+
+      <div class="hero-right">
+        <div>
+          <div class="hero-right-title">Datos del vendedor</div>
+          <div class="hero-chip-row">
+            <span class="chip">Vendedor: Ryan</span>
+            <span class="chip">Ubicación: Lima</span>
+            <span class="chip">Entrega: Estaciones del tren linea 1, mall del sur, feria de manya o puntos a coordinar / delivery</span>
+          </div>
+        </div>
+        <div>
+          <div class="hero-right-title">Medios de pago</div>
+          <div class="hero-chip-row">
+            <span class="chip">💜 Yape</span>
+            <span class="chip">💙 Plin</span>
+            <span class="chip">💵 Efectivo</span>
+          </div>
+        </div>
+        <div>
+          <div class="hero-right-title">Especialidad</div>
+          <div class="hero-chip-row">
+            <span class="chip">Fantasy</span>
+            <span class="chip">Classic</span>
+            <span class="chip">Exotic</span>
+            <span class="chip">Premium</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE MI -->
+    <section class="section" id="sobremi">
+      <div class="section-header">
+        <div>
+          <h3>Sobre la tienda</h3>
+          <p class="section-subtitle">Un coleccionista vendiendo a otros coleccionistas.</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <p>
+          Soy Ryan, coleccionista de Hot Wheels y otros carritos a escala. Reviso cada pieza antes de
+          publicarla para asegurar buen estado, pintura cuidada y blisters presentables en los modelos nuevos.
+        </p>
+        <p style="margin-top:0.5rem;">
+          Si buscas algo específico (JDM, muscle, clásicos, camionetas, etc.), puedes escribirme directamente
+          por WhatsApp y te paso fotos del stock actualizado.
+        </p>
+      </div>
+    </section>
+
+    <!-- COMO COMPRAR -->
+    <section class="section" id="comocomprar">
+      <div class="section-header">
+        <div>
+          <h3>Cómo comprar</h3>
+          <p class="section-subtitle">Pasos rápidos para cerrar tu pedido.</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <ol style="margin-left:1.1rem;">
+          <li>Revisa el catálogo y añade al carrito los modelos que te interesan.</li>
+          <li>Verifica el total estimado que aparece en la parte inferior de la página.</li>
+          <li>Haz clic en “Enviar resumen por WhatsApp”.</li>
+          <li>Coordinamos medio de pago (Yape, Plin o efectivo) y punto de entrega.</li>
+        </ol>
+        <p style="margin-top:0.6rem;">
+          Todos los precios son en soles (S/) y el stock se actualiza manualmente, así que algunos modelos
+          pueden agotarse rápido.
+        </p>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO -->
+    <section class="section" id="catalogo">
+      <div class="section-header">
+        <div>
+          <h3>Catálogo de Hot Wheels</h3>
+          <p class="section-subtitle">
+            Filtra por tipo o busca por nombre / año. Edita el listado en el código según tu stock real.
+          </p>
+        </div>
+        <div class="filters">
+          <label for="search">Buscar:</label>
+          <input
+            id="search"
+            type="text"
+            class="search-input"
+            placeholder="Ferrari, Audi, Ford..."
+          />
+          <select id="filterTag" class="select-input">
+            <option value="all">Todos</option>
+            <option value="jdm">JDM</option>
+            <option value="muscle">Muscle</option>
+            <option value="exotic">SUV / 4x4</option>
+            <option value="classic">Clásicos</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid" id="productGrid">
+        <!-- Rellenado por JS -->
+      </div>
+    </section>
+
+    <!-- RESUMEN / WHATSAPP -->
+    <section class="summary">
+      <div class="summary-main">
+        <div class="summary-total">
+          Total estimado: S/ <span id="summaryTotal">0.00</span>
+        </div>
+        <div class="section-subtitle">
+          El resumen se incluye automáticamente en el mensaje de WhatsApp.
+        </div>
+      </div>
+      <!-- CAMBIA 51999999999 TAMBIÉN AQUÍ -->
+      <a
+        id="whatsappLink"
+        class="btn btn-primary"
+        target="_blank"
+        href="https://wa.me/981092248?text=Hola%2C%20quiero%20comprar%20algunos%20Hot%20Wheels."
+      >
+        🧾 Enviar resumen por WhatsApp
+      </a>
+    </section>
+
+    <footer>
+      Hecho por Ryan • Hot Wheels Garage | Edita el archivo <strong>index.html</strong> para personalizar textos, precios y modelos.
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">Añadido al carrito 🏎️</div>
+
+  <script>
+    // ==============================
+    // CONFIGURA AQUÍ TUS PRODUCTOS
+    // ==============================
+
+    const products = [
+      {
+        id: 1,
+        name: "'84 AUDI sport Quattro",
+        year: 1984,
+        tag: "classic",
+        condition: "Nuevo en blister",
+        price: 17.0,
+        stock: 1,
+        note: "Icono del rally Grupo B, versión(treasure hunter)",
+      },
+      {
+        id: 2,
+        name: "Ferrafi SF90 Stradale",
+        year: 2020,
+        tag: "exotic",
+        condition: "Nuevo en blister",
+        price: 20.0,
+        stock: 2,
+        note: "Color Gris, muy buscado",
+      },
+      {
+        id: 3,
+        name: "FELINE LUCKY",
+        year: 2025,
+        tag: "Fantsy",
+        condition: "Nuevo en blister",
+        price: 18.0,
+        stock: 1,
+        note: "Gato de la suerte, muy buscado",
+      },
+      {
+        id: 4,
+        name: "Fish'd & Chip'd",
+        year: 2020,
+        tag: "classic",
+        condition: "Nuevo en blister",
+        price: 15.0,
+        stock: 1,
+        note: "Estilo clásico británico, versión(treasure hunter)",
+      },
+      {
+        id: 5,
+        name: "AUDI RS 6 AVANT",
+        year: 2023,
+        tag: "premium",
+        condition: "Premium (metal/metal)",
+        price: 60.0,
+        stock: 1,
+        note: "Versión Chase, Ruedas de goma, detalle fino",
+      },
+    ];
+
+    let cart = [];
+
+    const productGrid = document.getElementById("productGrid");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
+    const summaryTotal = document.getElementById("summaryTotal");
+    const toast = document.getElementById("toast");
+    const searchInput = document.getElementById("search");
+    const filterTag = document.getElementById("filterTag");
+    const whatsappLink = document.getElementById("whatsappLink");
+
+    function formatPrice(value) {
+      return value.toFixed(2);
+    }
+
+    function showToast() {
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1500);
+    }
+
+    function renderProducts() {
+      const search = searchInput.value.toLowerCase().trim();
+      const tag = filterTag.value;
+
+      productGrid.innerHTML = "";
+
+      const filtered = products.filter((p) => {
+        const matchesSearch =
+          p.name.toLowerCase().includes(search) ||
+          String(p.year).includes(search);
+        const matchesTag = tag === "all" ? true : p.tag === tag;
+        return matchesSearch && matchesTag;
+      });
+
+      if (filtered.length === 0) {
+        productGrid.innerHTML =
+          '<p style="font-size:0.9rem;color:#9ca3af;">No se encontraron modelos con esos filtros.</p>';
+        return;
+      }
+
+      filtered.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const tagLabel = document.createElement("div");
+        tagLabel.className = "card-tag";
+        tagLabel.textContent = p.tag.toUpperCase();
+        card.appendChild(tagLabel);
+
+        const img = document.createElement("div");
+        img.className = "card-image";
+        img.textContent =
+          "Aquí puedes poner una foto del carrito (reemplaza este recuadro por una imagen si quieres usar <img> con URL).";
+        card.appendChild(img);
+
+        const title = document.createElement("div");
+        title.className = "card-title";
+        title.textContent = p.name;
+        card.appendChild(title);
+
+        const detail = document.createElement("div");
+        detail.className = "card-detail";
+        detail.textContent =
+          p.year + " • " + p.condition + (p.note ? " • " + p.note : "");
+        card.appendChild(detail);
+
+        const stock = document.createElement("div");
+        stock.className = "stock";
+        stock.textContent = "Stock: " + p.stock + " unidad(es)";
+        card.appendChild(stock);
+
+        const bottom = document.createElement("div");
+        bottom.className = "card-bottom";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = "S/ " + formatPrice(p.price);
+        bottom.appendChild(price);
+
+        const btn = document.createElement("button");
+        btn.className = "btn-add";
+        btn.innerHTML = "➕ Añadir";
+        btn.onclick = () => addToCart(p.id);
+        bottom.appendChild(btn);
+
+        card.appendChild(bottom);
+        productGrid.appendChild(card);
+      });
+    }
+
+    function addToCart(productId) {
+      const product = products.find((p) => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find((c) => c.id === productId);
+      const qtyInCart = existing ? existing.qty : 0;
+
+      if (qtyInCart >= product.stock) {
+        alert("No hay más stock disponible de este modelo.");
+        return;
+      }
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ id: productId, qty: 1 });
+      }
+
+      updateCartUI();
+      showToast();
+    }
+
+    function updateCartUI() {
+      let count = 0;
+      let total = 0;
+
+      cart.forEach((item) => {
+        const product = products.find((p) => p.id === item.id);
+        if (!product) return;
+        count += item.qty;
+        total += product.price * item.qty;
+      });
+
+      cartCount.textContent = count;
+      cartTotal.textContent = formatPrice(total);
+      summaryTotal.textContent = formatPrice(total);
+
+      const lines = cart
+        .map((item) => {
+          const product = products.find((p) => p.id === item.id);
+          if (!product) return "";
+          return `${item.qty} x ${product.name} (S/ ${formatPrice(
+            product.price
+          )})`;
+        })
+        .filter(Boolean);
+
+      const message =
+        lines.length === 0
+          ? "Hola%2C%20quiero%20comprar%20algunos%20Hot%20Wheels."
+          : encodeURIComponent(
+              "Hola, vengo de tu página y quiero estos modelos:\n\n" +
+                lines.join("\n") +
+                `\n\nTotal aproximado: S/ ${formatPrice(total)}`
+            );
+
+      // CAMBIA TU NÚMERO AQUÍ TAMBIÉN
+      whatsappLink.href = `https://wa.me/981092248?text=${message}`;
+    }
+
+    searchInput.addEventListener("input", renderProducts);
+    filterTag.addEventListener("change", renderProducts);
+
+    renderProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
